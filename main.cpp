@@ -33,13 +33,19 @@ void print_queue(std::string_view name, Q q) {
 // points = [[0,0],[2,2],[3,10],[5,2],[7,0]]
 // cost = 20
 
+int prim1();
+
 int main()
+{
+  prim1();
+}
+
+int prim1()
 {
   vector<array<int, 2> > points = {{0,0},{2,2},{3,10},{5,2},{7,0}};
   print("points", points);
   auto N = points.size();
 
-//  vector<vector<int> > d0 = {{0,0}};
   vector<array<int, 2> > d0 = {{0,0}};
   print("d0", d0);
 
@@ -58,7 +64,7 @@ int main()
 
   int i = 0;
   for (auto /*const &*/ ii = points.begin(); ii != points.end(); ++ii, ++i) {
-//    adj[i] = vector<array<int,2> >(N);
+    //adj[i] = vector<array<int,2> >(N);
     auto [xi, yi] = (*ii);
 
     int j = 0;
@@ -69,12 +75,9 @@ int main()
     }
   }
 
-//  // TODO: this isnt the right data - must compute manhattan dist between each point
-//  minQ.push({2, 2});
-
-  // TODO: start with a point, add all adjacencies for that point...
-  //       pull top out of pq (will be lowest-cost edge), discard if we have already visited that dest...
-  //       add cost to total
+  // start with a point, add all adjacencies for that point...
+  // pull top out of pq (will be lowest-cost edge), discard if we have already visited that dest...
+  // add cost to total
   int totalCost = 0;
   int node = 0;
   visited.insert(0);
