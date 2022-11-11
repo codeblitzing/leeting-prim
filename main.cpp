@@ -35,45 +35,76 @@ void print_queue(std::string_view name, Q q) {
 
 int main()
 {
-  vector<vector<int> > points = {{0,0},{2,2},{3,10},{5,2},{7,0}};
+  vector<array<int, 2> > points = {{0,0},{2,2},{3,10},{5,2},{7,0}};
   print("points", points);
+  auto N = points.size();
 
-  vector<vector<int> > d0 = {{0,0}};
+//  vector<vector<int> > d0 = {{0,0}};
+  vector<array<int, 2> > d0 = {{0,0}};
   print("d0", d0);
 
-  auto cmp = [](vector<int> const & a, vector<int> const & b) -> bool {
-    return a[0] < b[0];
+  auto cmp = [](array<int,2> const & a, array<int,2> const & b) -> bool {
+    return a[0] > b[0];
   };
   priority_queue minQ(d0.begin(), d0.end(), cmp);
   print_queue("minQ", minQ);
 
   // ================
   // TODO: need visited list
+  set<int> visited;
 
   // Build adjacency list:   (src#): 0 -> [ [cost, dest#], [cost, dest#], ...]
-  vector<vector<vector<int> > > adj(points.size());
-//  for (auto & ipt: points) {
-//    for (auto &jpt: points)
-//  }
+  vector<vector<array<int,2> > > adj(N);
 
   int i = 0;
   for (auto /*const &*/ ii = points.begin(); ii != points.end(); ++ii, ++i) {
-    int j = 0;
+//    adj[i] = vector<array<int,2> >(N);
     auto [xi, yi] = (*ii);
-    for (auto const & jj = ii+1; jj != points.end(); ++jj, ++j) {
+
+    int j = 0;
+    for (auto /*const &*/ jj = points.begin(); jj != points.end(); ++jj, ++j) {
       auto [xj, yj] = *jj;
       auto cost = abs(xi - xj) + abs(yi - yj);
-      adj[i].push_back({cost, });
+      adj[i].push_back({cost, j});
     }
-
   }
 
-  // TODO: this isnt the right data - must compute manhattan dist between each point
-  minQ.push({2, 2});
+//  // TODO: this isnt the right data - must compute manhattan dist between each point
+//  minQ.push({2, 2});
 
   // TODO: start with a point, add all adjacencies for that point...
   //       pull top out of pq (will be lowest-cost edge), discard if we have already visited that dest...
   //       add cost to total
+  int totalCost = 0;
+  int node = 0;
+  visited.insert(0);
+
+  while (visited.size() < N) {
+    // Add all nodes that are adj to `node` to the min-heap
+    i = 0;
+    for (auto const & ii : adj[node]) {
+      auto const &[cost, dest] = ii;
+      i += 1;
+      if (!visited.contains(dest)) {
+        minQ.push({cost, dest});
+      }
+    }
+
+    // Pull items out of heap until we have a dest that we havent visited, yet.
+    for (;;) {
+      auto [cost, dest] = minQ.top();
+      minQ.pop();
+      if (visited.contains(dest)) {
+        continue;
+      }
+
+      // New dest
+      totalCost += cost;
+      visited.insert(dest);
+
+      break;
+    }
+  }
 
   int iiiii=10;
 
