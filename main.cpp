@@ -62,17 +62,17 @@ int mhat_dist(Point const & pt1, Point const & pt2)
 
 int main()
 {
-  vector<Point> points = {{0,0},{2,2},{3,10},{5,2},{7,0}};
+  vector<Point> points = {{0,0},{2,2},{3,10},{5,2},{7,0} /*,{9,5}*/};
   print("points", points);
   auto N = points.size();
 
-  for (int i = 0; i < N; ++i) {
-    cout << i << "->";
-    for (int j = 0; j < N; ++j) {
-      cout << "   " << i << "->" << j << ":" << mhat_dist(points[i], points[j]);
-    }
-    cout << endl;
-  }
+  //  for (int i = 0; i < N; ++i) {
+  //    cout << i << "->";
+  //    for (int j = 0; j < N; ++j) {
+  //      cout << "   " << i << "->" << j << ":" << mhat_dist(points[i], points[j]);
+  //    }
+  //    cout << endl;
+  //  }
 
   set<int> visited, un_visited;
 
