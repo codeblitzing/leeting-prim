@@ -86,12 +86,12 @@ int main()
   }
 
   // TODO: build min-heap
-  auto cmp = [](array<int,2> const & a, array<int,2> const & b) -> bool {
+  auto cmp = [](array<int,3> const & a, array<int,3> const & b) -> bool {
     return a[0] > b[0];
   };
 
   // Visit each node breadth-first
-  vector<array<int, 2> > d0 = {{0,curr_node}};
+  vector<array<int, 3> > d0 = {{0,curr_node,curr_node}};
   priority_queue min_heap(d0.begin(), d0.end(), cmp);
   print_queue("min_heap", min_heap);
 
@@ -103,18 +103,18 @@ int main()
     for (auto other_node: un_visited) {
       auto const & other = points[other_node];
       auto dist = mhat_dist(curr, other);
-      min_heap.push({dist, other_node});
+      min_heap.push({dist, other_node, curr_node});
     }
 
     // Pull out of min-heap until find an unvisited node
     for (;;) {
-      auto [cost, dest] = pop(min_heap);
+      auto [cost, dest, src] = pop(min_heap);
       if (visited.contains(dest)) {
         continue;
       }
 
       // This is the lowest-cost edge to add
-      cout << "adding: " << dest << " (" << cost << ")" << endl;
+      cout << "adding: " << src << "->" << dest << " (+" << cost << ")" << endl;
       total_cost += cost;
       curr_node = dest;
       break;
